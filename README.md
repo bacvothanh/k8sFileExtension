@@ -27,7 +27,7 @@ A lightweight desktop tool built with Electron to browse, edit, and sync `.confi
 ## 🚀 Run Locally
 
 ```bash
-git clone https://github.com/your-org/k8s-config-editor.git
+git clone https://github.com/bacvothanh/k8sFileExtension.git
 cd k8s-config-editor
 npm install
 npm run dev
