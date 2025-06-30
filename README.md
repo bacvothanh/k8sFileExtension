@@ -28,6 +28,6 @@ A lightweight desktop tool built with Electron to browse, edit, and sync `.confi
 
 ```bash
 git clone https://github.com/bacvothanh/k8sFileExtension.git
-cd k8s-config-editor
+cd k8sFileExtension
 npm install
-npm run dev
+npm run start
