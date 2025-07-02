@@ -6,7 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-const appRoot = __dirname; 
 function createWindow () {
   const win = new BrowserWindow({
     width: 1200,
@@ -39,22 +38,24 @@ ipcMain.handle('ensure-debug', async (event, namespace, configMapName) => {
 
 ipcMain.handle('save-temp-file', async (event, filename, content) => {
   try {
-    
+    const appRoot = path.dirname(app.getPath('exe')); // 📌 Tránh dùng __dirname
     const tempPath = path.join(appRoot, filename);
+
     fs.writeFileSync(tempPath, content, 'utf8');
 
-     // Trả về path theo định dạng dành cho kubectl cp (không chứa ổ đĩa)
-    const relativePath = tempPath.replace(/^.:/, ''); // remove ổ đĩa (C:, D:, ...)
-    const kubectlPath = relativePath.replace(/\\/g, '/'); // chuyển \ thành /
+    // Chuyển path sang định dạng dùng được cho kubectl cp
+    const relativePath = tempPath.replace(/^.:/, ''); // loại bỏ C: hoặc D:
+    const kubectlPath = relativePath.replace(/\\/g, '/');
 
     return kubectlPath.startsWith('/') ? kubectlPath : `/${kubectlPath}`;
   } catch (err) {
-    console.error('❌ Error saving tmp file:', err);
+    console.error('❌ Error saving temp file:', err);
     throw err;
   }
 });
 
 ipcMain.handle('delete-temp-file', async (event, filename) => {
+  const appRoot = path.dirname(app.getPath('exe'));
   const filePath = path.join(appRoot, filename);
 
   try {
